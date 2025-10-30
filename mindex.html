@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Jet Travels - Premium World Travel</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts (Playfair Display for headings, Lato for body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS for Logo Palette, Fonts, and Animations -->
+    <style>
+        :root {
+            /* Colors inspired by the Blue Jet Travels logo */
+            --primary-blue: #0a3d62; /* Deep blue from eagle/text */
+            --accent-blue: #00a8c5;   /* Bright cyan/teal from wings/swoosh */
+            --accent-gold: #c9b037;   /* Muted gold from under text */
+            --light: #f8f9fa;       /* Off-white for light backgrounds */
+            --dark: #1a202c;         /* Dark grey for footer/text */
+        }
+        
+        /* Apply the font and theme colors */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #ffffff;
+            color: var(--dark);
+        }
+        
+        /* Font classes for luxury feel */
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Lato', sans-serif; }
+        
+        /* --- Header Scroll Effect --- */
+        #main-header {
+            transition: background-color 0.4s ease-out, box-shadow 0.4s ease-out;
+        }
+        /* State when scrolled */
+        #main-header.scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.07);
+        }
+        #main-header.scrolled .nav-link,
+        #main-header.scrolled #logo-text,
+        #main-header.scrolled #mobile-menu-button {
+            color: var(--primary-blue);
+        }
+        #main-header.scrolled .nav-link:hover {
+            color: var(--accent-gold);
+        }
+        #main-header.scrolled #mobile-menu-button:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        /* --- Luxury Nav Link Hover Effect --- */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-gold);
+            transition: width 0.3s ease-out;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* --- Hero Animations --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+        }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-600 { animation-delay: 0.6s; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+        }
+        .animate-chevron-bounce {
+            animation: bounce 1.5s infinite;
+        }
+
+        /* --- Section Fade-in on Scroll --- */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Testimonial CSS Slider --- */
+        .testimonial-slider {
+            scroll-snap-type: x mandatory;
+        }
+        .testimonial-slide {
+            scroll-snap-align: center;
+        }
+        
+        /* --- Custom Scrollbar (Luxury touch) --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
+    </style>
+    
+    <!-- Tailwind Customization -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        'primary-blue': 'var(--primary-blue)',
+                        'accent-blue': 'var(--accent-blue)',
+                        'accent-gold': 'var(--accent-gold)',
+                        'light': 'var(--light)',
+                        'dark': 'var(--dark)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-dark font-sans">
+
+    <!-- Header / Navigation -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="flex items-center">
+                        <img class="h-12 w-auto" 
+                             src="../assets/1.png" 
+                             alt="Blue Jet Travels Logo"
+                             onerror="this.src='https://placehold.co/150x50/0a3d62/c9b037?text=Blue+Jet+Travels&font=inter'">
+                        <span id="logo-text" class="ml-3 text-2xl font-bold text-white hidden sm:inline font-serif transition-colors duration-300">Blue Jet Travels</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link active font-medium text-white hover:text-gray-200 transition-colors duration-300">Home</a>
+                    <a href="#booking-form" class="nav-link font-medium text-gray-200 hover:text-white transition-colors duration-300">Book</a>
+                    <a href="#destinations" class="nav-link font-medium text-gray-200 hover:text-white transition-colors duration-300">Destinations</a>
+                    <a href="#features" class="nav-link font-medium text-gray-200 hover:text-white transition-colors duration-300">About</a>
+                    <a href="#footer" class="nav-link font-medium text-gray-200 hover:text-white transition-colors duration-300">Contact</a>
+                </div>
+                
+                <!-- Desktop CTA -->
+                <div class="hidden md:block">
+                    <a href="#booking-form" class="inline-flex items-center px-6 py-2 border border-accent-gold rounded-full text-base font-medium text-white bg-accent-gold hover:bg-opacity-90 shadow-lg transition-transform hover:scale-105">
+                        Book Now
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors duration-300">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Hamburger icon -->
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" id="hamburger-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                        <!-- Close icon -->
+                        <svg class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" id="close-icon">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu (collapsible) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-primary-blue bg-light">Home</a>
+                <a href="#booking-form" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-light">Book</a>
+                <a href="#destinations" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-light">Destinations</a>
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-light">About</a>
+                <a href="#footer" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-light">Contact</a>
+            </div>
+            <div class="p-4">
+                <a href="#booking-form" class="block w-full text-center px-6 py-2 border border-transparent rounded-full text-base font-medium text-white bg-accent-gold hover:bg-opacity-90 shadow-sm">
+                    Book Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        
+        <!-- Hero Section -->
+        <section id="home" class="relative h-screen min-h-[700px] flex flex-col items-center justify-center text-center text-white">
+            <!-- Background Image/Video Placeholder -->
+            <div class="absolute inset-0">
+                <img src="https://placehold.co/1920x1080/0a3d62/f0f0f0?text=Luxury+Aerial+Destination+Video+Still" 
+                     alt="Breathtaking aerial view from a private jet window" 
+                     class="w-full h-full object-cover">
+                <!-- Overlay -->
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            
+            <div class="relative z-10 p-4 flex flex-col items-center">
+                <!-- Hero Text -->
+                <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-bold !leading-tight tracking-tight mb-4 animate-fade-in-up delay-200">
+                    Your Journey, <span class="text-accent-blue">Redefined</span>
+                </h1>
+                <p class="max-w-xl font-sans text-lg sm:text-xl text-gray-200 mb-12 animate-fade-in-up delay-400">
+                    Premium travel solutions and exclusive destinations for the discerning explorer. Experience the world in unmatched comfort.
+                </pre>
+            </div>
+            
+            <!-- Animated Scroll Chevron -->
+            <a href="#booking-form" class="absolute bottom-10 z-10 animate-fade-in-up delay-600">
+                <div class="w-10 h-10 text-white animate-chevron-bounce">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </div>
+            </a>
+        </section>
+
+        <!-- Booking Form Section -->
+        <section id="booking-form" class="py-16 sm:py-24 bg-light">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+                <h2 class="text-center font-serif text-4xl sm:text-5xl font-bold text-primary-blue mb-12">
+                    Begin Your Journey
+                </h2>
+                <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
+                    <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 items-end">
+                        <!-- From -->
+                        <div class="lg:col-span-1">
+                            <label for="from" class="block text-sm font-medium text-gray-700 mb-1">From</label>
+                            <input type="text" id="from" placeholder="City or Airport" class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:border-accent-gold focus:ring-accent-gold transition">
+                        </div>
+                        <!-- To -->
+                        <div class="lg:col-span-1">
+                            <label for="to" class="block text-sm font-medium text-gray-700 mb-1">To</label>
+                            <input type="text" id="to" placeholder="Destination" class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:border-accent-gold focus:ring-accent-gold transition">
+                        </div>
+                        <!-- Departure -->
+                        <div class="lg:col-span-1">
+                            <label for="departure" class="block text-sm font-medium text-gray-700 mb-1">Departure</label>
+                            <input type="date" id="departure" class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:border-accent-gold focus:ring-accent-gold text-gray-500 transition">
+                        </div>
+                        <!-- Travelers -->
+                        <div class="lg:col-span-1">
+                            <label for="travelers" class="block text-sm font-medium text-gray-700 mb-1">Travelers</label>
+                            <input type="number" id="travelers" value="1" min="1" class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:border-accent-gold focus:ring-accent-gold transition">
+                        </div>
+                        <!-- Search Button -->
+                        <div class="md:col-span-2 lg:col-span-1">
+                            <button type="submit" class="w-full mt-1 lg:mt-0 flex items-center justify-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary-blue hover:bg-opacity-90 transition-transform hover:scale-105">
+                                Explore Tours
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Why Choose Us Section -->
+        <section id="features" class="py-16 sm:py-24 bg-white fade-in-on-scroll">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-base font-semibold text-accent-blue tracking-wide uppercase">The Blue Jet Difference</h2>
+                    <p class="mt-2 font-serif text-4xl sm:text-5xl font-bold text-primary-blue">Why Fly With Us?</p>
+                </div>
+                
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <!-- Feature 1: Exclusive Fleet -->
+                    <div class="p-6 rounded-lg transition-all duration-300 hover:bg-light hover:shadow-lg hover:-translate-y-2">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-20 w-20 rounded-full bg-primary-blue text-white mx-auto">
+                                <!-- Elegant Plane Icon -->
+                                <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.875L6 12zm0 0h12.75" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="mt-6 text-2xl font-bold font-serif text-dark">Exclusive Fleet</h3>
+                        <p class="mt-2 text-base text-gray-600">Travel in our state-of-the-art, luxury-configured aircraft. Your comfort is our first priority.</p>
+                    </div>
+                    
+                    <!-- Feature 2: Global Destinations -->
+                    <div class="p-6 rounded-lg transition-all duration-300 hover:bg-light hover:shadow-lg hover:-translate-y-2">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-20 w-20 rounded-full bg-primary-blue text-white mx-auto">
+                                <!-- Elegant Globe Icon -->
+                                <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c.318 0 .631-.023.936-.065m-6.633-5.26a9.004 9.004 0 0012.396 0m-12.396 0A9.004 9.004 0 0012 20.936m0-17.171c.318 0 .631.023.936.065m-6.633 5.26a9.004 9.004 0 0012.396 0m-12.396 0A9.004 9.004 0 0012 3.76m0 17.171a9.004 9.004 0 00-8.716-6.747M3.27 9.253A9.004 9.004 0 0012 3.76m8.73 5.493A9.004 9.004 0 0012 3.76" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="mt-6 text-2xl font-bold font-serif text-dark">Global Destinations</h3>
+                        <p class="mt-2 text-base text-gray-600">From Paris to Papeete, your dream location is within reach. We curate journeys to the world's most desirable locales.</p>
+                    </div>
+                    
+                    <!-- Feature 3: 24/7 Concierge -->
+                    <div class="p-6 rounded-lg transition-all duration-300 hover:bg-light hover:shadow-lg hover:-translate-y-2">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-20 w-20 rounded-full bg-primary-blue text-white mx-auto">
+                                <!-- Elegant Concierge Icon (Star) -->
+                                <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.418a.563.563 0 01.32.908l-4.4 3.192a.563.563 0 00-.182.62l1.658 4.86a.563.563 0 01-.812.622l-4.401-3.192a.563.563 0 00-.65 0l-4.4 3.192a.563.563 0 01-.812-.622l1.658-4.86a.563.563 0 00-.182-.62L2.24 9.82a.563.563 0 01.32-.908h5.418a.563.563 0 00.475-.31L11.48 3.5z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="mt-6 text-2xl font-bold font-serif text-dark">24/7 Concierge</h3>
+                        <p class="mt-2 text-base text-gray-600">Dedicated, white-glove support from the moment you plan your trip until you return home safely.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Popular Destinations Section -->
+        <section id="destinations" class="py-16 sm:py-24 bg-light fade-in-on-scroll">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                    <div class="text-center sm:text-left mb-6 sm:mb-0">
+                        <h2 class="text-base font-semibold text-accent-blue tracking-wide uppercase">Explore</h2>
+                        <p class="mt-2 font-serif text-4xl sm:text-5xl font-bold text-primary-blue">Exclusive Destinations</p>
+                    </div>
+                    <a href="#" class="inline-block px-6 py-3 border border-accent-gold text-accent-gold rounded-full font-medium transition-colors hover:bg-accent-gold hover:text-white">
+                        View All
+                    </a>
+                </div>
+                
+                <!-- Asymmetrical Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 grid-rows-2 gap-6 h-[600px]">
+                    <!-- Card 1: Large -->
+                    <a href="#" class="group relative sm:col-span-2 sm:row-span-2 rounded-2xl overflow-hidden shadow-lg">
+                        <img class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" src="https://placehold.co/800x800/00a8c5/f0f0f0?text=Luxury+Santorini+View" alt="Luxury Santorini villa with ocean view">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-3xl font-bold font-serif">Santorini, Greece</h3>
+                            <p class="mt-1 text-gray-200">Private caldera-view villas.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Card 2: Horizontal -->
+                    <a href="#" class="group relative sm:col-span-2 rounded-2xl overflow-hidden shadow-lg">
+                        <img class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" src="https://placehold.co/800x400/0a3d62/f0f0f0?text=Amalfi+Coast+Yacht" alt="Yacht on the Amalfi Coast">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-3xl font-bold font-serif">Amalfi Coast, Italy</h3>
+                            <p class="mt-1 text-gray-200">Cliffside villages by private yacht.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Card 3: Vertical -->
+                    <a href="#" class="group relative rounded-2xl overflow-hidden shadow-lg">
+                        <img class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" src="https://placehold.co/400x400/c9b037/f0f0f0?text=Serene+Maldives" alt="Serene Maldives bungalows over turquoise water">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-2xl font-bold font-serif">The Maldives</h3>
+                        </div>
+                    </a>
+                    
+                    <!-- Card 4: Vertical -->
+                    <a href="#" class="group relative rounded-2xl overflow-hidden shadow-lg">
+                        <img class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" src="https://placehold.co/400x400/555/f0f0f0?text=Aspen+Chalet" alt="Luxury Aspen chalet in winter">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-2xl font-bold font-serif">Aspen, USA</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-16 sm:py-24 bg-white fade-in-on-scroll">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative max-w-3xl mx-auto text-center">
+                    <div class="absolute -top-10 -left-10 text-9xl font-serif text-accent-gold/10 z-0" aria-hidden="true">
+                        “
+                    </div>
+                    
+                    <div class="testimonial-slider flex overflow-x-auto snap-mandatory snap-x scroll-smooth">
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide flex-shrink-0 w-full snap-center px-4">
+                            <blockquote class="text-2xl sm:text-3xl font-serif text-dark italic leading-relaxed">
+                                "Blue Jet Travels managed every detail flawlessly. It wasn't just a trip; it was an experience. Absolutely first-class from start to finish."
+                            </blockquote>
+                            <footer class="mt-6">
+                                <p class="font-bold text-lg text-primary-blue">Eliza B.</p>
+                                <p class="text-sm text-gray-500">First Class Passenger, Dubai</p>
+                            </footer>
+                        </div>
+                        
+                        <!-- Slide 2 -->
+                        <div class="testimonial-slide flex-shrink-0 w-full snap-center px-4">
+                            <blockquote class="text-2xl sm:text-3xl font-serif text-dark italic leading-relaxed">
+                                "The private charter to the Alps was seamless. The concierge service anticipated our needs before we even knew we had them. Unparalleled service."
+                            </blockquote>
+                            <footer class="mt-6">
+                                <p class="font-bold text-lg text-primary-blue">Marcus & Chen</p>
+                                <p class="text-sm text-gray-500">Private Charter Clients, Aspen</p>
+                            </footer>
+                        </div>
+                    </div>
+                    <!-- Add slider indicators or controls here if needed -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Final CTA Section -->
+        <section class="bg-primary-blue fade-in-on-scroll">
+            <div class="container mx-auto max-w-5xl py-20 sm:py-24 px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-white">
+                    Begin Your Unforgettable Journey
+                </h2>
+                <p class="mt-4 text-lg text-gray-200 max-w-2xl mx-auto">
+                    Let our travel experts craft your perfect, bespoke getaway. Contact us for a private, no-obligation consultation.
+                </p>
+                <div class="mt-10">
+                    <a href="#" class="inline-flex items-center px-10 py-3 border border-transparent rounded-full text-base font-medium text-primary-blue bg-accent-gold hover:bg-opacity-90 shadow-lg transition-transform hover:scale-105">
+                        Book Your Consultation
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-dark text-gray-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                
+                <!-- Footer: Logo & About (Wider) -->
+                <div class="lg:col-span-2">
+                    <a href="#" class="flex items-center">
+                        <img class="h-10 w-auto" 
+                             src="../assets/1.png" 
+                             alt="Blue Jet Travels Logo"
+                             onerror="this.src='https://placehold.co/150x50/0a3d62/c9b037?text=Blue+Jet+Travels&font=inter'">
+                        <span class="ml-3 text-xl font-bold text-white font-serif">Blue Jet Travels</span>
+                    </a>
+                    <p class="mt-4 text-sm text-gray-400">
+                        Crafting bespoke, luxury travel experiences to the world's most exclusive destinations.
+                    </p>
+                </div>
+                
+                <!-- Footer: Quick Links -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Company</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Our Fleet</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Press</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Footer: Explore -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Explore</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Destinations</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Private Charters</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Experiences</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Footer: Legal -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Legal</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="text-base text-gray-300 hover:text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            
+            <!-- Footer: Bottom Bar -->
+            <div class="mt-12 pt-8 border-t border-gray-700 flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-sm text-gray-400">&copy; 2025 Blue Jet Travels. All Rights Reserved.</p>
+                
+                <!-- Social Icons -->
+                <div class="flex space-x-6 mt-4 sm:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <span class="sr-only">Facebook</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <span class="sr-only">Instagram</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C8.134 2 7.857 2.015 6.88 2.06C5.9 2.106 5.107 2.28 4.37 2.568c-.75.29-1.4.67-1.96 1.23c-.56.56-1.04 1.21-1.32 1.96C2.28 5.106 2.106 5.9 2.06 6.88C2.015 7.857 2 8.134 2 12s.015 4.143.06 5.12c.046.98.22 1.773.508 2.51c.29.75.67 1.4 1.23 1.96c.56.56 1.21 1.04 1.96 1.32c.737.288 1.53.462 2.51.508C7.857 21.985 8.134 22 12 22s4.143-.015 5.12-.06c.98-.046 1.773-.22 2.51-.508c.75-.29 1.4-.67 1.96-1.23c.56-.56 1.04-1.21 1.32 1.96c.288-.737.462-1.53.508-2.51C21.985 16.143 22 15.866 22 12s-.015-4.143-.06-5.12c-.046-.98-.22-1.773-.508-2.51c-.29-.75-.67-1.4-1.23-1.96c-.56-.56-1.21-1.04-1.96-1.32C17.773 2.28 16.98 2.106 16.12 2.06C15.143 2.015 14.866 2 12 2zm0 1.62c3.8 0 4.07.014 5.48.077c.87.04 1.48.18 1.9.33c.47.17.82.39 1.15.72c.33.33.55.68.72 1.15c.15.42.29.93.33 1.9c.063 1.41.077 1.68.077 5.48s-.014 4.07-.077 5.48c-.04.87-.18 1.48-.33 1.9c-.17.47-.39.82-.72 1.15c-.33.33-.68.55-1.15.72c-.42.15-.93.29-1.9.33c-1.41.063-1.68.077-5.48.077s-4.07-.014-5.48-.077c-.87-.04-1.48-.18-1.9-.33c-.47-.17-.82-.39-1.15-.72c-.33-.33-.55-.68-.72-1.15c-.15-.42-.29.93-.33-1.9C2.45 16.07 2.43 15.8 2.43 12s.014-4.07.077-5.48c.04-.87.18-1.48.33-1.9c.17-.47.39-.82.72-1.15c.33-.33.68.55 1.15-.72c.42-.15.93.29 1.9-.33C7.93 2.45 8.2 2.43 12 2.43zm0 2.91c-3.62 0-6.57 2.95-6.57 6.57s2.95 6.57 6.57 6.57s6.57-2.95 6.57-6.57s-2.95-6.57-6.57-6.57zm0 10.8c-2.33 0-4.23-1.9-4.23-4.23s1.9-4.23 4.23-4.23s4.23 1.9 4.23 4.23s-1.9 4.23-4.23 4.23zm4.33-7.66c-.6 0-1.09-.49-1.09-1.09s.49-1.09 1.09-1.09s1.09.49 1.09 1.09s-.49 1.09-1.09 1.09z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <span class="sr-only">Twitter</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M22.46 6.13c-.8.35-1.65.59-2.55.7A4.45 4.45 0 0018.6 4.43c-1.65 0-3.1 1.2-3.6 2.7C13.2 6.8 11.2 5.6 9.7 4.1c-.5 1-1 2.3-1 3.5.7.5 1.4 1 2 1.3-.6.1-1.2.1-1.8.1-1.3 0-2.4-.4-3.5-1.1-.3 1.2-.1 2.5.6 3.5-.5 0-1 0-1.5-.2.2 1.5 1 2.8 2.4 3.4-.3.1-.6.1-.9.1-.3 0-.5 0-.8-.1.4 1.3 1.5 2.2 2.9 2.2-1.3 1-3 1.6-4.7 1.6-.3 0-.6 0-.9-.1 1.4 1 3.1 1.5 5 1.5 6 0 9.3-5 9.3-9.4 0-.1 0-.3 0-.4.6-.5 1.2-1 1.8-1.6-.6.3-1.3.4-1.9.5.7-.4 1.2-1 1.5-1.8z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts for animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            
+            // --- Mobile Menu Toggle ---
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            if (menuButton) {
+                menuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                    hamburgerIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+
+            // --- Header Scroll Effect ---
+            const header = document.getElementById('main-header');
+            const handleScroll = () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            };
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Run on load
+
+            // --- Fade-in on Scroll ---
+            const sections = document.querySelectorAll('.fade-in-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
+
